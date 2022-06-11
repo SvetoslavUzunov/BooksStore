@@ -1,0 +1,30 @@
+﻿@model List<AllBooksViewModel>
+
+@{
+    ViewBag.Title = "All Books";
+}
+
+@if (!Model.Any())
+{
+    <p>No found books yet... -_-</p>
+}
+else
+{
+    for (int i = 0; i < Model.Count(); i++)
+    {
+        <div class="row">
+            <div class="card-header">
+                <div class="col-lg-6 mb-4">
+                    <div class="card" style="width: 18rem;">
+                        <img src="@Model[i].ImageUrl" class="card-img-top">
+                        <div class="card-body">
+                            <h5 class="card-title">@Model[i].Title</h5>
+                            <p class="card-text">@Model[i].Description</p>
+                            <a href="#" class="btn btn-primary">View More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}

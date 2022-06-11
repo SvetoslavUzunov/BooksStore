@@ -1,32 +1,41 @@
-﻿namespace BookStore.Controllers
+﻿namespace BooksStore.Controllers;
+
+using BooksStore.Data;
+using BooksStore.Models;
+using BooksStore.Models.Book;
+using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
+
+public class HomeController : Controller
 {
-    using BookStore.Models;
-    using Microsoft.AspNetCore.Mvc;
-    using System.Diagnostics;
+    private readonly BooksStoreDbContext data;
 
-    public class HomeController : Controller
+    public HomeController(BooksStoreDbContext data)
+        => this.data = data;
+
+    public IActionResult Index()
     {
-        private readonly ILogger<HomeController> _logger;
+        //var books = data.Books
+        //    .Select(b => new AllBooksViewModel
+        //    {
+        //        Id = b.Id,
+        //        Title = b.Title,
+        //        Description = b.Description,
+        //        ImageUrl = b.ImageUrl,
+        //        YearPublished = b.YearPublished,
+        //        Price = b.Price,
+        //        AuthorId = b.AuthorId,
+        //        GenreId = b.GenreId
+        //    })
+        //    .ToList();
 
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
+        //return View(books);
+        return View();
+    }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    public IActionResult Error()
+    {
+        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }

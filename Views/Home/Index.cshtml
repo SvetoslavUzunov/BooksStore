@@ -1,8 +1,18 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewBag.Title = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@*@if (!Model.Any())
+{
+    <div class="jumbotron">
+        <h1 class="display-4">Welcome to the world of books... </h1>
+        <hr class="my-4">
+        <p>There are no books in the system currently available so why don't you just add one?</p>
+        <a asp-controller="Book" asp-action="Add" class="btn btn-primary btn-lg" role="button">Add Book</a>
+    </div>
+}
+else
+{
+    
+}
+*@
