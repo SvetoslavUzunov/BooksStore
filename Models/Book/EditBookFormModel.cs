@@ -3,7 +3,7 @@
 using System.ComponentModel.DataAnnotations;
 using static Data.DataConstants.Book;
 
-public class AddBookFormModel
+public class EditBookFormModel
 {
     public int Id { get; set; }
 

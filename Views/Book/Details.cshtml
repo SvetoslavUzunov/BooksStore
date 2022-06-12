@@ -1,0 +1,28 @@
+﻿@model DetailsBookViewModel
+
+@{
+    ViewBag.Title = "Book Details";
+}
+
+<div class="container">
+    <div class="row card-header">
+        <div class="col col-md-3">
+            <div class="card" style="width: 18rem;">
+                <img src="@Model.ImageUrl" class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title">@Model.Title</h5>
+                    <p class="card-text">@Model.AuthorName</p>
+                    <h4 class="card-text">@Model.Price lv.</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col col-md-9">
+            <h5>Genre: @Model.GenreName</h5>
+            <h5>Year Published: @Model.YearPublished y.</h5>
+            <h5>Description: @Model.Description</h5>
+            <hr />
+            <a asp-controller="Book" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger float-end m-2">Delete</a>
+            <a asp-controller="Book" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning float-end m-2">Edit</a>
+        </div>
+    </div>
+</div>

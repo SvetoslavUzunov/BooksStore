@@ -1,6 +1,6 @@
 ﻿namespace BooksStore.Models.Book;
 
-public class AllBooksViewModel
+public class DetailsBookViewModel
 {
     public int Id { get; set; }
 
@@ -19,5 +19,6 @@ public class AllBooksViewModel
     public IEnumerable<BookAuthorsViewModel> Authors { get; set; }
 
     public int GenreId { get; set; }
+    public string GenreName { get; set; }
     public IEnumerable<BookGenresViewModel> Genres { get; set; }
 }

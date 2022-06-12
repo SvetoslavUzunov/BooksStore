@@ -15,13 +15,10 @@ public class BookController : Controller
 
     public IActionResult Add()
     {
-        var authors = GetBookAuthors();
-        var genres = GetBookGenres();
-
         var bookData = new AddBookFormModel
         {
-            Authors = authors,
-            Genres = genres
+            Authors = GetBookAuthors(),
+            Genres = GetBookGenres()
         };
 
         return View(bookData);
@@ -63,7 +60,7 @@ public class BookController : Controller
         data.Books.Add(bookData);
         data.SaveChanges();
 
-        return RedirectToAction("Index", "Home");
+        return RedirectToAction(nameof(All));
     }
 
     public IActionResult All()
@@ -78,11 +75,105 @@ public class BookController : Controller
                 YearPublished = b.YearPublished,
                 Price = b.Price,
                 AuthorId = b.AuthorId,
-                GenreId = b.GenreId
+                GenreId = b.GenreId,
+                AuthorName = b.Author.Name,
             })
             .ToList();
 
         return View(books);
+    }
+
+    public IActionResult Details(int id)
+    {
+        var book = data.Books
+            .Select(b => new DetailsBookViewModel
+            {
+                Id = b.Id,
+                Title = b.Title,
+                Description = b.Description,
+                ImageUrl = b.ImageUrl,
+                YearPublished = b.YearPublished,
+                Price = b.Price,
+                AuthorName = b.Author.Name,
+                GenreName = b.Genre.Name
+            })
+            .FirstOrDefault(b => b.Id == id);
+
+        return View(book);
+    }
+
+    [Authorize]
+    public IActionResult Edit(int id)
+    {
+        var bookData = data.Books.Select(b => new EditBookFormModel
+        {
+            Id = b.Id,
+            Title = b.Title,
+            Description = b.Description,
+            ImageUrl = b.ImageUrl,
+            YearPublished = b.YearPublished,
+            Price = b.Price
+        })
+        .FirstOrDefault(b => b.Id == id);
+
+        bookData.Authors = GetBookAuthors();
+        bookData.Genres = GetBookGenres();
+
+        return View(bookData);
+    }
+
+    [Authorize]
+    [HttpPost]
+    public IActionResult Edit(int id, EditBookFormModel book)
+    {
+        if (!data.Authors.Any(a => a.Id == book.AuthorId))
+        {
+            ModelState.AddModelError(nameof(book.AuthorId), "Author does not exist!");
+        }
+
+        if (!data.Genres.Any(g => g.Id == book.GenreId))
+        {
+            ModelState.AddModelError(nameof(book.GenreId), "Genre does not exist!");
+        }
+
+        if (!ModelState.IsValid)
+        {
+            book.Authors = GetBookAuthors();
+            book.Genres = GetBookGenres();
+
+            return View(book);
+        }
+
+        var bookData = data.Books.Find(id);
+
+        if (bookData != null)
+        {
+            bookData.Title = book.Title;
+            bookData.Description = book.Description;
+            bookData.ImageUrl = book.ImageUrl;
+            bookData.YearPublished = book.YearPublished;
+            bookData.Price = book.Price;
+            bookData.AuthorId = book.AuthorId;
+            bookData.GenreId = book.GenreId;
+
+            data.SaveChanges();
+        }
+
+        return RedirectToAction(nameof(All));
+    }
+
+    [Authorize]
+    public IActionResult Delete(int id)
+    {
+        var bookToDelete = data.Books.Find(id);
+
+        if (bookToDelete != null)
+        {
+            data.Books.Remove(bookToDelete);
+            data.SaveChanges();
+        }
+
+        return RedirectToAction(nameof(All));
     }
 
     private IEnumerable<BookAuthorsViewModel> GetBookAuthors()
