@@ -4,6 +4,7 @@ using BooksStore.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BooksStore.Data.Migrations
 {
     [DbContext(typeof(BooksStoreDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220613073143_AddFavouriteTable")]
+    partial class AddFavouriteTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,7 +58,7 @@ namespace BooksStore.Data.Migrations
                         .HasMaxLength(10000)
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("FavouriteId")
+                    b.Property<int>("FavouriteId")
                         .HasColumnType("int");
 
                     b.Property<int>("GenreId")
@@ -95,9 +97,6 @@ namespace BooksStore.Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("BookId")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -334,7 +333,9 @@ namespace BooksStore.Data.Migrations
 
                     b.HasOne("BooksStore.Data.Models.Favourite", "Favourite")
                         .WithMany("Books")
-                        .HasForeignKey("FavouriteId");
+                        .HasForeignKey("FavouriteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("BooksStore.Data.Models.Genre", "Genre")
                         .WithMany("Books")

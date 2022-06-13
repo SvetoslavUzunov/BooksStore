@@ -1,6 +1,7 @@
 ﻿namespace BooksStore.Data.Models;
 
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using static DataConstants.Book;
 
 public class Book
@@ -31,4 +32,7 @@ public class Book
     public int GenreId { get; set; }
 
     public Genre Genre { get; set; }
+
+    public int? FavouriteId { get; set; }
+    public Favourite? Favourite { get; set; }
 }

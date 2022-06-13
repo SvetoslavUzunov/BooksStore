@@ -15,22 +15,21 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        //var books = data.Books
-        //    .Select(b => new AllBooksViewModel
-        //    {
-        //        Id = b.Id,
-        //        Title = b.Title,
-        //        Description = b.Description,
-        //        ImageUrl = b.ImageUrl,
-        //        YearPublished = b.YearPublished,
-        //        Price = b.Price,
-        //        AuthorId = b.AuthorId,
-        //        GenreId = b.GenreId
-        //    })
-        //    .ToList();
+        var books = data.Books
+            .Select(b => new BookViewModel
+            {
+                Id = b.Id,
+                Title = b.Title,
+                Description = b.Description,
+                ImageUrl = b.ImageUrl,
+                YearPublished = b.YearPublished,
+                Price = b.Price,
+                AuthorId = b.AuthorId,
+                GenreId = b.GenreId
+            })
+            .ToList();
 
-        //return View(books);
-        return View();
+        return View(books);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

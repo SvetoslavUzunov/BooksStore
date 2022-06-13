@@ -27,9 +27,11 @@ public class BookFormModel
     [Range(PriceMinValue, PriceMaxValue)]
     public decimal Price { get; set; }
 
+    [Display(Name = "Author")]
     public int AuthorId { get; set; }
-    public IEnumerable<BookAuthorsModel> Authors { get; set; }
+    public IEnumerable<BookAuthorsViewModel>? Authors { get; set; }
 
+    [Display(Name = "Genre")]
     public int GenreId { get; set; }
-    public IEnumerable<BookGenresModel> Genres { get; set; }
+    public IEnumerable<BookGenresViewModel>? Genres { get; set; }
 }

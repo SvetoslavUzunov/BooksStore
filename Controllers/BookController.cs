@@ -5,6 +5,7 @@ using BooksStore.Data.Models;
 using BooksStore.Models.Book;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 public class BookController : Controller
 {
@@ -13,9 +14,10 @@ public class BookController : Controller
     public BookController(BooksStoreDbContext data)
         => this.data = data;
 
+    [Authorize]
     public IActionResult Add()
     {
-        var bookData = new AddBookFormModel
+        var bookData = new BookFormModel
         {
             Authors = GetBookAuthors(),
             Genres = GetBookGenres()
@@ -26,7 +28,7 @@ public class BookController : Controller
 
     [Authorize]
     [HttpPost]
-    public IActionResult Add(AddBookFormModel book)
+    public IActionResult Add(BookFormModel book)
     {
         if (!data.Authors.Any(a => a.Id == book.AuthorId))
         {
@@ -66,7 +68,27 @@ public class BookController : Controller
     public IActionResult All()
     {
         var books = data.Books
-            .Select(b => new AllBooksViewModel
+            .Select(b => new BookViewModel
+            {
+                Id = b.Id,
+                Title = b.Title,
+                Description = b.Description,
+                ImageUrl = b.ImageUrl,
+                YearPublished = b.YearPublished,
+                Price = b.Price,
+                AuthorId = b.AuthorId,
+                AuthorName = b.Author.Name,
+                GenreId = b.GenreId
+            })
+            .ToList();
+
+        return View(books);
+    }
+
+    public IActionResult ByGenre(string name)
+    {
+        var books = data.Books
+            .Select(b => new BookViewModel
             {
                 Id = b.Id,
                 Title = b.Title,
@@ -76,8 +98,9 @@ public class BookController : Controller
                 Price = b.Price,
                 AuthorId = b.AuthorId,
                 GenreId = b.GenreId,
-                AuthorName = b.Author.Name,
+                GenreName = b.Genre.Name
             })
+            .Where(b => b.GenreName == name)
             .ToList();
 
         return View(books);
@@ -105,7 +128,7 @@ public class BookController : Controller
     [Authorize]
     public IActionResult Edit(int id)
     {
-        var bookData = data.Books.Select(b => new EditBookFormModel
+        var bookData = data.Books.Select(b => new BookFormModel
         {
             Id = b.Id,
             Title = b.Title,
@@ -124,7 +147,7 @@ public class BookController : Controller
 
     [Authorize]
     [HttpPost]
-    public IActionResult Edit(int id, EditBookFormModel book)
+    public IActionResult Edit(int id, BookFormModel book)
     {
         if (!data.Authors.Any(a => a.Id == book.AuthorId))
         {
@@ -145,7 +168,6 @@ public class BookController : Controller
         }
 
         var bookData = data.Books.Find(id);
-
         if (bookData != null)
         {
             bookData.Title = book.Title;
@@ -174,6 +196,69 @@ public class BookController : Controller
         }
 
         return RedirectToAction(nameof(All));
+    }
+
+    [Authorize]
+    public IActionResult AddToFavourites(int id)
+    {
+        var bookToFavourites = data.Books
+            .Find(id);
+
+        if (bookToFavourites != null)
+        {
+            var favourite = new Favourite
+            {
+                Books = new List<Book>
+                {
+                    bookToFavourites,
+                },
+            };
+
+            bookToFavourites.FavouriteId = favourite.Id;
+
+            data.Favourites.Add(favourite);
+            data.SaveChanges();
+        }
+
+        return RedirectToAction(nameof(All));
+    }
+
+    [Authorize]
+    public IActionResult RemoveFromFavourites(int id)
+    {
+        var favouriteBookToRemove = data.Favourites
+            .Include(f => f.Books)
+            .Where(f => f.Books.Any(b => b.Id == id))
+            .FirstOrDefault();
+
+        if (favouriteBookToRemove != null)
+        {
+            data.Favourites.Remove(favouriteBookToRemove);
+            data.SaveChanges();
+        }
+
+        return RedirectToAction(nameof(Favourites));
+    }
+
+    public IActionResult Favourites()
+    {
+        var books = data.Books
+            .Where(b => b.FavouriteId != null)
+            .Select(b => new BookViewModel
+            {
+                Id = b.Id,
+                Title = b.Title,
+                Description = b.Description,
+                ImageUrl = b.ImageUrl,
+                YearPublished = b.YearPublished,
+                Price = b.Price,
+                AuthorId = b.AuthorId,
+                AuthorName = b.Author.Name,
+                GenreId = b.GenreId
+            })
+            .ToList();
+
+        return View(books);
     }
 
     private IEnumerable<BookAuthorsViewModel> GetBookAuthors()

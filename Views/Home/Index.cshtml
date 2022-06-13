@@ -1,8 +1,11 @@
-﻿@{
+﻿@model List<BookViewModel>
+
+@{
     ViewBag.Title = "Home Page";
 }
 
-@*@if (!Model.Any())
+
+@if (!Model.Any())
 {
     <div class="jumbotron">
         <h1 class="display-4">Welcome to the world of books... </h1>
@@ -13,6 +16,73 @@
 }
 else
 {
-    
+    <h4 class="mt-5 mb-3">Choice by category</h4>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">All Books</h5>
+                        <a asp-controller="Book" asp-action="All">
+                            <img class="card-img w-50 h-50" src="https://npr.brightspotcdn.com/dims4/default/76398c9/2147483647/strip/true/crop/3000x2125+0+0/resize/880x623!/quality/90/?url=http%3A%2F%2Fnpr-brightspot.s3.amazonaws.com%2F6a%2F25%2F049726ac40f0b470df778cf14b02%2F11162021-bm-banned-books-006.JPG">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Fantasy</h5>
+                        <a asp-controller="Book" asp-action="ByGenre" asp-route-name="Fantasy">
+                            <img class="card-img w-50 h-100" src="https://specials-images.forbesimg.com/imageserve/5d6ed75caea4d30008f00258/best-YA-novels-2019/960x0.jpg">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Thriller</h5>
+                        <a asp-controller="Book" asp-action="ByGenre" asp-route-name="Thriller">
+                            <img class="card-img w-50 h-50" src="https://static.independent.co.uk/2021/09/03/11/Psychological%20thriller%20books%20copy.jpg?quality=75&width=1200&auto=webp">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Biography</h5>
+                        <a asp-controller="Book" asp-action="ByGenre" asp-route-name="Biography">
+                            <img class="card-img w-25 h-25" src="https://images-na.ssl-images-amazon.com/images/I/51mHDriUacL._SX548_BO1,204,203,200_.jpg">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Self-Help</h5>
+                        <a asp-controller="Book" asp-action="ByGenre" asp-route-name="Self-Help">
+                            <img class="card-img w-50 h-50" src="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/best-self-help-books2-1652198388.jpg?crop=1.00xw:1.00xh">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Young adult</h5>
+                        <a asp-controller="Book" asp-action="ByGenre" asp-route-name="Young adult">
+                            <img class="card-img w-50 h-50" src="https://www.ft.com/__origami/service/image/v2/images/raw/http://prod-upp-image-read.ft.com/93ed9b92-ee2c-11e8-89c8-d36339d835c0?source=next&fit=scale-down&quality=highest&width=1440">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 }
-*@
