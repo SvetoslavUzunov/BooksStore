@@ -35,6 +35,12 @@
         </nav>
     </header>
     <div class="container">
+        @if (TempData.ContainsKey(GlobalConstants.GlobalMessageKey))
+        {
+            <div class="alert alert-success" role="alert">
+                @TempData[GlobalConstants.GlobalMessageKey]
+            </div>
+        }
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
@@ -42,7 +48,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; @DateTime.UtcNow.Year - BooksStore
+            &copy; @DateTime.UtcNow.Year - BooksStore by Svetoslav Uzunov
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

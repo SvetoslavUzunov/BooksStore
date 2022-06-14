@@ -66,6 +66,8 @@ public static class ApplicationBuilderExtension
             new Author{ Name = "Dan Brown" },
             new Author{ Name = "John Green" },
             new Author{ Name = "Anne Frank" },
+            new Author{ Name = "Harper Lee" },
+            new Author{ Name = "Margaret Mitchell" },
         });
 
         data.SaveChanges();

@@ -18,7 +18,7 @@ else
                             <p class="text-secondary">@Model[i].AuthorName</p>
                             <h4 class="card-text">@Model[i].Price lv.</h4>
                             <a asp-controller="Book" asp-action="Details" asp-route-id="@Model[i].Id" class="btn btn-primary">Details</a>
-                            <a asp-controller="Book" asp-action="AddToFavourites" asp-route-id="@Model[i].Id" class="btn btn-success float-end"> Add to favourites</a>
+                            <a asp-controller="Book" asp-action="AddToFavourites" asp-route-id="@Model[i].Id" class="btn btn-success float-end">Add to favourites</a>
                         </div>
                     </div>
                 </div>

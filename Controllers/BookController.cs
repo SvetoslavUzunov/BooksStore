@@ -6,6 +6,7 @@ using BooksStore.Models.Book;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using static GlobalConstants;
 
 public class BookController : Controller
 {
@@ -61,6 +62,8 @@ public class BookController : Controller
 
         data.Books.Add(bookData);
         data.SaveChanges();
+
+        TempData[GlobalMessageKey] = "Book was added!";
 
         return RedirectToAction(nameof(All));
     }
@@ -135,7 +138,12 @@ public class BookController : Controller
             Description = b.Description,
             ImageUrl = b.ImageUrl,
             YearPublished = b.YearPublished,
-            Price = b.Price
+            Price = b.Price,
+            AuthorId = b.AuthorId,
+            AuthorName = b.Author.Name,
+            GenreId = b.GenreId,
+            GenreName = b.Genre.Name
+
         })
         .FirstOrDefault(b => b.Id == id);
 
@@ -181,6 +189,8 @@ public class BookController : Controller
             data.SaveChanges();
         }
 
+        TempData[GlobalMessageKey] = "Book was edited!";
+
         return RedirectToAction(nameof(All));
     }
 
@@ -194,6 +204,8 @@ public class BookController : Controller
             data.Books.Remove(bookToDelete);
             data.SaveChanges();
         }
+
+        TempData[GlobalMessageKey] = "Book was deleted!";
 
         return RedirectToAction(nameof(All));
     }
@@ -218,6 +230,8 @@ public class BookController : Controller
 
             data.Favourites.Add(favourite);
             data.SaveChanges();
+
+            TempData[GlobalMessageKey] = "You successfully added book to favourites!";
         }
 
         return RedirectToAction(nameof(All));
@@ -235,6 +249,8 @@ public class BookController : Controller
         {
             data.Favourites.Remove(favouriteBookToRemove);
             data.SaveChanges();
+
+            TempData[GlobalMessageKey] = "Book was removed from favourites!";
         }
 
         return RedirectToAction(nameof(Favourites));

@@ -38,9 +38,13 @@
             <div class="form-group">
                 <label asp-for="AuthorId"></label>
                 <select asp-for="AuthorId" class="form-control">
+                    <option value="@Model.AuthorId" selected>@Model.AuthorName</option>
                     @foreach (var author in Model.Authors)
                     {
-                        <option value="@author.Id">@author.Name</option>
+                        if (author.Id != Model.AuthorId)
+                        {
+                            <option value="@author.Id">@author.Name</option>
+                        }
                     }
                 </select>
                 <span asp-validation-for="AuthorId" class="small text-danger"></span>
@@ -49,9 +53,13 @@
             <div class="form-group">
                 <label asp-for="GenreId"></label>
                 <select asp-for="GenreId" class="form-control">
+                    <option value="@Model.GenreId" selected>@Model.GenreName</option>
                     @foreach (var genre in Model.Genres)
                     {
-                        <option value="@genre.Id">@genre.Name</option>
+                        if (genre.Id != Model.GenreId)
+                        {
+                            <option value="@genre.Id">@genre.Name</option>
+                        }
                     }
                 </select>
                 <span asp-validation-for="AuthorId" class="small text-danger"></span>

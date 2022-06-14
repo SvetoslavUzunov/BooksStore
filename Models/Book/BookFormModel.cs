@@ -29,9 +29,11 @@ public class BookFormModel
 
     [Display(Name = "Author")]
     public int AuthorId { get; set; }
+    public string? AuthorName { get; set; }
     public IEnumerable<BookAuthorsViewModel>? Authors { get; set; }
 
     [Display(Name = "Genre")]
     public int GenreId { get; set; }
+    public string? GenreName { get; set; }
     public IEnumerable<BookGenresViewModel>? Genres { get; set; }
 }
